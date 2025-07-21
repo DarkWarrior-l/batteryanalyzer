@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电池分析系统 - 登录</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', '微软雅黑', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .auth-container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            margin: 20px;
+        }
+        
+        .graphic-section {
+            flex: 1;
+            background: linear-gradient(to bottom right, #0072ff, #00c6ff);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .graphic-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        
+        .app-info {
+            z-index: 2;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .app-logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .app-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .app-tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 80%;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .form-section {
+            flex: 1;
+            padding: 60px 40px;
+            background: rgba(30, 30, 46, 0.7);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .auth-header {
+            margin-bottom: 30px;
+        }
+        
+        .auth-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .auth-subtitle {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab {
+            padding: 12px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            opacity: 1;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(0, 198, 255, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 198, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        
+        .toggle-password:hover {
+            opacity: 1;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: #00c6ff;
+        }
+        
+        .forgot-password {
+            color: #00c6ff;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .forgot-password:hover {
+            opacity: 0.8;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 114, 255, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .divider-text {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-3px);
+        }
+        
+        .social-icon {
+            font-size: 1.2rem;
+        }
+        
+        .switch-auth {
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        
+        .switch-link {
+            color: #00c6ff;
+            font-weight: 600;
+            text-decoration: none;
+            margin-left: 8px;
+            transition: opacity 0.3s;
+        }
+        
+        .switch-link:hover {
+            opacity: 0.8;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background: rgba(30, 30, 46, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left: 4px solid #27ae60;
+        }
+        
+        .notification.error {
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 900px) {
+            .auth-container {
+                flex-direction: column;
+            }
+            
+            .graphic-section {
+                padding: 30px 20px;
+            }
+            
+            .app-logo {
+                font-size: 3rem;
+            }
+            
+            .app-name {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .form-section {
+                padding: 40px 25px;
+            }
+            
+            .tabs {
+                justify-content: center;
+            }
+            
+            .tab {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="notification-text">操作成功！</span>
+        </div>
+    </div>
+    
+    <div class="auth-container">
+        <div class="graphic-section">
+            <div class="app-info">
+                <div class="app-logo">🔋📊</div>
+                <h1 class="app-name">电池循环效率分析系统</h1>
+                <p class="app-tagline">专业级的电池性能分析与可视化工具，助力您的电化学研究</p>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <div class="auth-header">
+                <h2 class="auth-title">欢迎回来</h2>
+                <p class="auth-subtitle">请登录您的账户继续使用</p>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="login">登录</div>
+                <div class="tab" data-tab="register">注册</div>
+            </div>
+            
+            <!-- 登录表单 -->
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">电子邮箱</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="请输入您的邮箱" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">密码</label>
+                    <div class="password-container">
+                        <input type="password" class="form-input" id="loginPassword" placeholder="请输入您的密码" required>
+                        <span class="toggle-password" data-target="loginPassword"><i class="fas fa-eye"></i></span>
+                    </div>
+                </div>
+                
+                <div class="remember-forgot">
+                    <label class="remember-me">
+                        <input type="checkbox" class="checkbox"> 记住我
+                    </label>
+                    <a href="#" class="forgot-password">忘记密码?</a>
+                </div>
+                
+                <button type="submit" class="submit-btn">登录账户</button>
+                
+                <div class="divider">
+                    <span class="divider-text">或使用以下方式登录</span>
+                </div>
+                
+                <div class="social-login">
+                    <div class="social-btn">
+                        <i class="fab fa-google social-icon"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-facebook-f social-icon"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-linkedin-in social-icon"></i>
+                    </div>
+                </div>
+                
+                <p class="switch-auth">
+                    还没有账户? <a href="#" class="switch-link" data-action="register">立即注册</a>
+                </p>
+            </form>
+            
+            <!-- 注册表单 -->
+            <form class="auth-form" id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">姓名</label>
+                    <input type="text" class="form-input" id="registerName" placeholder="请输入您的姓名" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">电子邮箱</label>
+                    <input type="email" class="form-input" id="registerEmail" placeholder="请输入您的邮箱" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">密码</label>
+                    <div class="password-container">
+                        <input type="password" class="form-input" id="registerPassword" placeholder="至少8个字符" required>
+                        <span class="toggle-password" data-target="registerPassword"><i class="fas fa-eye"></i></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">确认密码</label>
+                    <div class="password-container">
+                        <input type="password" class="form-input" id="confirmPassword" placeholder="请再次输入密码" required>
+                        <span class="toggle-password" data-target="confirmPassword"><i class="fas fa-eye"></i></span>
+                    </div>
+                </div>
+                
+                <div class="remember-me">
+                    <input type="checkbox" class="checkbox" id="termsAgreement" required> 
+                    <label for="termsAgreement">我同意<a href="#" class="forgot-password">服务条款</a>和<a href="#" class="forgot-password">隐私政策</a></label>
+                </div>
+                
+                <button type="submit" class="submit-btn">创建账户</button>
+                
+                <p class="switch-auth">
+                    已有账户? <a href="#" class="switch-link" data-action="login">立即登录</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 显示通知
+        function showNotification(message, isSuccess = true) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${isSuccess ? 'success' : 'error'}`;
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 切换标签页
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabType = this.dataset.tab;
+                    
+                    // 更新标签状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应表单
+                    if (tabType === 'login') {
+                        document.getElementById('loginForm').style.display = 'flex';
+                        document.getElementById('registerForm').style.display = 'none';
+                    } else {
+                        document.getElementById('loginForm').style.display = 'none';
+                        document.getElementById('registerForm').style.display = 'flex';
+                    }
+                });
+            });
+            
+            // 切换登录/注册链接
+            const switchLinks = document.querySelectorAll('.switch-link');
+            switchLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const action = this.dataset.action;
+                    
+                    tabs.forEach(t => {
+                        if (t.dataset.tab === action) {
+                            t.click();
+                        }
+                    });
+                });
+            });
+            
+            // 切换密码可见性
+            const toggleIcons = document.querySelectorAll('.toggle-password');
+            toggleIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    const input = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fas fa-eye-slash';
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fas fa-eye';
+                    }
+                });
+            });
+            
+            // 登录表单提交
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const submitBtn = this.querySelector('.submit-btn');
+                
+                // 保存原始按钮文本
+                const originalBtnText = submitBtn.textContent;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
+                submitBtn.disabled = true;
+                
+                // 模拟API请求延迟
+                setTimeout(() => {
+                    // 实际应用中这里是真实的API验证
+                    if (email && password) {
+                        // 存储登录状态
+                        sessionStorage.setItem('isAuthenticated', 'true');
+                        sessionStorage.setItem('userEmail', email);
+                        
+                        // 显示成功消息
+                        showNotification('登录成功！正在跳转到测试系统...', true);
+                        
+                        // 实际跳转到电池测试页
+                        setTimeout(() => {
+                            window.location.href = 'battery-test.html';
+                        }, 1500);
+                    } else {
+                        showNotification('邮箱或密码错误，请重试', false);
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.disabled = false;
+                    }
+                }, 1000);
+            });
+            
+            // 注册表单提交
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const submitBtn = this.querySelector('.submit-btn');
+                
+                // 保存原始按钮文本
+                const originalBtnText = submitBtn.textContent;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 创建中...';
+                submitBtn.disabled = true;
+                
+                // 模拟API请求延迟
+                setTimeout(() => {
+                    // 验证密码是否匹配
+                    if (password !== confirmPassword) {
+                        showNotification('两次输入的密码不匹配', false);
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.disabled = false;
+                        return;
+                    }
+                    
+                    // 保存用户信息到本地存储（实际应用应保存到数据库）
+                    localStorage.setItem('userName', name);
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('userPassword', password);
+                    
+                    // 切换到登录表单
+                    document.querySelector('.tab[data-tab="login"]').click();
+                    
+                    // 通知用户注册成功
+                    showNotification('账户创建成功！请登录您的账户', true);
+                    
+                    submitBtn.textContent = originalBtnText;
+                    submitBtn.disabled = false;
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
